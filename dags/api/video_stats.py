@@ -1,15 +1,23 @@
 import requests
 import json
-import os
-from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=".env")
-API_KEY = os.getenv("API_KEY")
-CHANNEL_HANDLE = "MrBeast"
+# import os
+# from dotenv import load_dotenv
+# load_dotenv(dotenv_path=".env")
+
+from datetime import date
+from airflow.decorators import task
+from airflow.models import Variable
+
+
+API_KEY = Variable.get("API_KEY")
+CHANNEL_HANDLE = Variable.get("CHANNEL_HANDLE")
 maxResults = 50
 
 # Function to retrieve the upload playlist ID for a given YouTube channel handle
 # Returns the playlist ID as a string
+# add @task decorator from airflow
+@task
 def get_playlist_id():
 
     try:
@@ -33,7 +41,8 @@ def get_playlist_id():
 
 # Function to retrieve the list of videos from the upload playlist for a given YouTube channel handle
 # Returns a list of video IDs as strings
-
+# add @task decorator from airflow
+@task
 def get_videos_id(playlist_id):
 
     video_ids = []
@@ -61,7 +70,9 @@ def get_videos_id(playlist_id):
 
     except requests.exceptions.RequestException as e:
         raise e
-
+# Extract video data based on video_ids returned by get_video_id func
+# add @task decorator from airflow
+@task
 def extract_video_data(video_ids):
 
     extracted_data = []
@@ -107,10 +118,21 @@ def extract_video_data(video_ids):
     except requests.exceptions.RequestException as e:
         raise e
 
+# Save extracted data in json format in /data directory in local machine
+# add @task decorator from airflow
+@task
+def save_to_json(extracted_data):
+    file_path = f"./data/YT_data_{date.today()}.json"
+
+    with open(file_path, "w", encoding="utf-8") as json_output_file:
+        json.dump(extracted_data, json_output_file, indent=4, ensure_ascii=False)
+
 
 # Main execution block for the video_stats script
 if __name__ == "__main__":
     # This will call the function and print the result if needed
     playlist_id = get_playlist_id()
     video_ids = get_videos_id(playlist_id)
-    print(extract_video_data(video_ids))
+    video_data =extract_video_data(video_ids)
+    save_to_json(video_data)
+
