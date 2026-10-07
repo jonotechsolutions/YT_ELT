@@ -68,8 +68,4 @@ def real_postgres_connection():
     finally:
         if conn:
             conn.close()
-
-
-
-
-
+            

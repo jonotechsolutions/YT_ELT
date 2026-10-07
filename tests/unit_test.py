@@ -15,7 +15,7 @@ def test_postgres_conn(mock_postgres_conn_vars):
     assert conn.port == 1234
     assert conn.schema == "mock_db_name"
 
-# test assessment for 
+# test assessment for Dags
 def test_dags_integrity(dagbag):
     # 1. test no import error
     assert dagbag.import_errors == {}, f"Import errors found: {dagbag.import_errors}"
@@ -39,8 +39,8 @@ def test_dags_integrity(dagbag):
 
     # 4. test each dags has the number of tasks expected
     expected_task_counts = {
-        "produce_json": 4,
-        "update_db": 2,
+        "produce_json": 5,
+        "update_db": 3,
         "data_quality": 2,
     }
     print("=====================")
