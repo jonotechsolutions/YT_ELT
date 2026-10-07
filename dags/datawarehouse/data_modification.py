@@ -22,7 +22,7 @@ def insert_rows(cur,conn,schema,row):
             # Core table has "video_type" which makes it different from the stating table
             cur.execute(
                 f"""INSERT INTO {schema}.{table}("Video_ID","Video_Title","Upload_Date","Duration","Video_Type","Video_Views","Likes_Count","Comments_Count")
-                VALUES ((%(Video_ID)s,%(Video_Title)s,%(Upload_Date)s,%(Duration)s,%(Video_Type)s,%(Video_Views)s,%(Likes_Count)s,%(Likes_Count)s);)
+                VALUES (%(Video_ID)s,%(Video_Title)s,%(Upload_Date)s,%(Duration)s,%(Video_Type)s,%(Video_Views)s,%(Likes_Count)s,%(Comments_Count)s);
                 """,row
             )
 
@@ -31,7 +31,7 @@ def insert_rows(cur,conn,schema,row):
         logger.info(f"Inserted row with Video_ID: {row[video_id]}")
 
     except Exception as e:
-        logger.error(f"Error inserting row with video_ID: {row[video_id]}")
+        logger.error(f"Error inserting row with video_ID: {row[video_id]} - {e}")
 
 
 # Func update to update data in "staging" schema from row data in json then update "Core" schema from "staging schema"
@@ -51,8 +51,8 @@ def update_rows(cur,conn,schema,row):
         else:
             Video_ID = "Video_ID"
             Upload_Date = "Upload_Date"
-            Video_Title = "title"
-            Video_Views = "Video_Title"
+            Video_Title = "Video_Title"
+            Video_Views = "Video_Views"
             Likes_Count = "Likes_Count"
             Comments_Count = "Comments_Count"
 
@@ -62,7 +62,7 @@ def update_rows(cur,conn,schema,row):
                 "Video_Views" = %({Video_Views})s,
                 "Likes_Count" = %({Likes_Count})s,
                 "Comments_Count" = %({Comments_Count})s
-            WHERE "Video_ID = %({Video_ID})s AND "Upload_Date" = %({Upload_Date})s;
+            WHERE "Video_ID" = %({Video_ID})s AND "Upload_Date" = %({Upload_Date})s;
             """,
             row
         )

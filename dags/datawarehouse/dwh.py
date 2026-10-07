@@ -72,7 +72,7 @@ def core_table():
         current_video_ids = set()
 
         cur.execute(f"SELECT * FROM staging.{table};")
-        rows = cur.fetchall
+        rows = cur.fetchall()
 
         for row in rows:
 
