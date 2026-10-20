@@ -28,6 +28,7 @@
 #
 # Feel free to modify this file to suit your needs. 
 # added ligne for testing the ci-cd on pull request
+# ligne added
 ---
 x-airflow-common:
   &airflow-common
