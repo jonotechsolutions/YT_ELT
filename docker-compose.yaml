@@ -26,7 +26,8 @@
 #                                as described in https://airflow.apache.org/docs/docker-stack/build.html.
 #                                Default: ''
 #
-# Feel free to modify this file to suit your needs.
+# Feel free to modify this file to suit your needs. 
+# added ligne for testing
 ---
 x-airflow-common:
   &airflow-common
