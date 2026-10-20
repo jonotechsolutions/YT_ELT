@@ -21,20 +21,20 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: checkout code
-              uses: action/checkout@v7.0.1
+              uses: actions/checkout@v7
             - name: Get changed files
               id: changed-files-build
-              uses: tj-action/changed-files@v47.0.6
+              uses: tj-actions/changed-files@v47
               with:
                 files: |
                     Dockerfile
                     requirements.txt
             - name: Set up Docker buildx
               if: steps.changed-files-build.outputs.any_changed == 'true'
-              uses: docker/setup-buildx-action@v4.4.1
+              uses: docker/setup-buildx-action@v4
             - name: login to Dockerhub
               if: steps.changed-files-build.outputs.any_changed == 'true'
-              uses: docker/login-action@4.6.0
+              uses: docker/login-action@4
               with:
                 username: ${{ vars.DOCKERHUB_USERNAME }}
                 password: ${{ secrets.DOCKERHUB_PASSWORD }}
@@ -78,10 +78,10 @@ jobs:
             DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
         steps:
             - name: checkout Code
-              uses: action/checkout@v7.0.1
+              uses: actions/checkout@v7
             - name: Get changed files
               id: changed-files-tests
-              uses: tj-action/changed-files@v47.0.6
+              uses: tj-actions/changed-files@v47
               with:
                 files: |
                     dags/**
